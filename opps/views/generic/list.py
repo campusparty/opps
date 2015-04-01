@@ -74,7 +74,6 @@ class ListView(View, DjangoListView):
 
         domain_folder = self.get_template_folder()
         template_list = self.get_template_list(domain_folder)
-        custom_template_path = self.get_custom_template_path()
 
         if domain_folder != "containers":
             template_list.extend(self.get_template_list())
