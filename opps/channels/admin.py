@@ -30,7 +30,7 @@ class ChannelAdmin(PublishableAdmin, MPTTModelAdmin, AdminViewPermission):
     fieldsets = (
         (_(u'Identification'), {
             'fields': ('site', 'parent', 'name', 'slug', 'layout', 'hat',
-                       'description', 'main_image',
+                       'description', 'main_image', 'custom_template_path',
                        'order', ('show_in_menu', 'include_in_main_rss'),
                        'homepage', 'group', 'paginate_by')}),
         (_(u'Publication'), {

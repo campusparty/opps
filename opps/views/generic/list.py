@@ -32,31 +32,32 @@ class ListView(View, DjangoListView):
 
             if self.channel.group and self.channel.parent:
                 templates.append('{0}/{1}/{2}.html'.format(
-                    domain_folder, self.channel.parent.long_slug, list_name))
+                    domain_folder, self.channel.parent.get_template_path(), list_name))
+
 
                 if self.request.GET.get('page') and\
                    self.__class__.__name__ not in\
                    settings.OPPS_PAGINATE_NOT_APP:
                     templates.append('{0}/{1}/{2}_paginated.html'.format(
-                        domain_folder, self.channel.parent.long_slug,
+                        domain_folder, self.channel.parent.get_template_path(),
                         list_name))
 
             if self.request.GET.get('page') and\
                self.__class__.__name__ not in settings.OPPS_PAGINATE_NOT_APP:
                 templates.append('{0}/{1}/{2}_paginated.html'.format(
-                    domain_folder, self.channel.long_slug, list_name))
+                    domain_folder, self.channel.get_template_path(), list_name))
 
             templates.append('{0}/{1}/{2}.html'.format(
-                domain_folder, self.channel.long_slug, list_name))
+                domain_folder, self.channel.get_template_path(), list_name))
 
             for t in self.channel.get_ancestors()[::-1]:
                 templates.append('{0}/{1}/{2}.html'.format(
-                    domain_folder, t.long_slug, list_name))
+                    domain_folder, t.get_template_path(), list_name))
                 if self.request.GET.get('page') and\
                    self.__class__.__name__ not in\
                    settings.OPPS_PAGINATE_NOT_APP:
                     templates.append('{0}/{1}/{2}_paginated.html'.format(
-                        domain_folder, t.long_slug, list_name))
+                        domain_folder, t.get_template_path(), list_name))
 
         if self.request.GET.get('page') and\
            self.__class__.__name__ not in settings.OPPS_PAGINATE_NOT_APP:
@@ -73,6 +74,7 @@ class ListView(View, DjangoListView):
 
         domain_folder = self.get_template_folder()
         template_list = self.get_template_list(domain_folder)
+        custom_template_path = self.get_custom_template_path()
 
         if domain_folder != "containers":
             template_list.extend(self.get_template_list())

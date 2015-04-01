@@ -60,6 +60,13 @@ class Channel(MPTTModel, Publishable, Slugged):
         help_text=_(u'Check only if this channel is the homepage.'
                     u' Should have only one homepage per site')
     )
+
+    custom_template_path = models.CharField(
+        _(u"Custom Template Path"),
+        max_length=255, null=True, blank=True,
+        help_text=_(u'Optional. Fill to use a custom template path.')
+    )
+
     group = models.BooleanField(_(u"Group sub-channel?"), default=False)
     order = models.IntegerField(_(u"Order"), default=0)
     parent = TreeForeignKey('self', related_name='subchannel',
@@ -92,6 +99,11 @@ class Channel(MPTTModel, Publishable, Slugged):
         return u"http://{0}{1}".format(self.site_domain,
                                        self.get_absolute_url())
     get_http_absolute_url.short_description = _(u'Get HTTP Absolute URL')
+
+    def get_template_path(self):
+        if self.custom_template_path:
+            return self.custom_template_path
+        return self.long_slug
 
     @staticmethod
     def autocomplete_search_fields():
